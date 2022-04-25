@@ -40,7 +40,8 @@
   </div>
 </template>
 <script>
-import { reactive } from "vue"
+import {reactive, onMounted} from "vue"
+import { useStore } from  'vuex'
 export default {
   setup () {
     const formData = reactive({
@@ -49,9 +50,17 @@ export default {
       password: "",
       password_confirmation: ""
     })
-    return {
-      form:formData
+   const store = useStore()
 
+    const submitForm = ()=>{
+    store.dispatch('auth/signUp',123)
+    }
+    onMounted(()=>{
+      submitForm()
+    })
+    return {
+      form:formData,
+      submitForm
     }
   }
 }
