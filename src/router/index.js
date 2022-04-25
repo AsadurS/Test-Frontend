@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
+    path: '/',
+    redirect: '/auth/login'
+  },
+  {
     path: '/auth/login',
     component: () => import(/* webpackChunkName: "about" */ '../views/auth/user-login.vue'),
     meta:{
