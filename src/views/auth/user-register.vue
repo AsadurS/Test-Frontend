@@ -51,7 +51,6 @@ export default {
       password_confirmation: ""
     })
    const store = useStore()
-
     const submitForm = ()=>{
     store.dispatch('auth/signUp',123)
     }

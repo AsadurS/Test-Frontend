@@ -34,6 +34,19 @@ export default {
                     return dispatch('attempt', res.data.token)
                 });
         },
+        async me({commit})
+        {
+            await apiClient.post("api/me")
+                .then(res=>{
+                    commit('SET_TOKEN', res.data.token)
+                    commit('SET_USER', res.data.token)
+                }).catch(()=>{
+                   
+                    commit('SET_TOKEN', null)
+                    commit('SET_USER', null)
+
+                });
+        },
         async signUp({dispatch},credentials)
         {
             await apiClient.post("api/signup",credentials)

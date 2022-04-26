@@ -1,9 +1,35 @@
+<script>
+import {onMounted, ref} from "vue";
+ import {useStore} from "vuex";
+ export  default {
+   setup(){
+     const isAuthinticated = ref(true);
+     const store = useStore();
+      const localToken = localStorage.getItem('token')
+     onMounted(()=>{
+        if(localToken){
+          getUserData()
+        }
+     })
+    const   getUserData= async ()=>{
+    await  store.dispatch('auth/me')
+        isAuthinticated.value=false
+     }
+     return {
+       isAuthinticated
+     }
+   }
+ }
+</script>
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-  </nav>
+ <div v-if="!isAuthinticated">
+   <nav >
+     <router-link to="/">Home</router-link> |
+   </nav>
 
-  <router-view/>
+   <router-view/>
+ </div>
+  <div v-if="isAuthinticated" class="chaotic-orbit"></div>
 </template>
 
 <style lang="scss">
@@ -13,6 +39,144 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.chaotic-orbit {
+  --uib-size: 35px;
+  --uib-speed: 1.5s;
+  --uib-color: black;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--uib-size);
+  width: var(--uib-size);
+  animation: rotate calc(var(--uib-speed) * 1.667) infinite linear;
+}
+
+.chaotic-orbit::before,
+.chaotic-orbit::after {
+  content: '';
+  position: absolute;
+  height: 60%;
+  width: 60%;
+  border-radius: 50%;
+  background-color: var(--uib-color);
+  will-change: transform;
+  flex-shrink: 0;
+}
+
+.chaotic-orbit::before {
+  animation: orbit var(--uib-speed) linear infinite;
+}
+
+.chaotic-orbit::after {
+  animation: orbit var(--uib-speed) linear calc(var(--uib-speed) / -2)
+  infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: translate(calc(var(--uib-size) * 0.5)) scale(0.73684);
+    opacity: 0.65;
+  }
+  5% {
+    transform: translate(calc(var(--uib-size) * 0.4)) scale(0.684208);
+    opacity: 0.58;
+  }
+  10% {
+    transform: translate(calc(var(--uib-size) * 0.3)) scale(0.631576);
+    opacity: 0.51;
+  }
+  15% {
+    transform: translate(calc(var(--uib-size) * 0.2)) scale(0.578944);
+    opacity: 0.44;
+  }
+  20% {
+    transform: translate(calc(var(--uib-size) * 0.1)) scale(0.526312);
+    opacity: 0.37;
+  }
+  25% {
+    transform: translate(0%) scale(0.47368);
+    opacity: 0.3;
+  }
+  30% {
+    transform: translate(calc(var(--uib-size) * -0.1)) scale(0.526312);
+    opacity: 0.37;
+  }
+  35% {
+    transform: translate(calc(var(--uib-size) * -0.2)) scale(0.578944);
+    opacity: 0.44;
+  }
+  40% {
+    transform: translate(calc(var(--uib-size) * -0.3)) scale(0.631576);
+    opacity: 0.51;
+  }
+  45% {
+    transform: translate(calc(var(--uib-size) * -0.4)) scale(0.684208);
+    opacity: 0.58;
+  }
+  50% {
+    transform: translate(calc(var(--uib-size) * -0.5)) scale(0.73684);
+    opacity: 0.65;
+  }
+  55% {
+    transform: translate(calc(var(--uib-size) * -0.4)) scale(0.789472);
+    opacity: 0.72;
+  }
+  60% {
+    transform: translate(calc(var(--uib-size) * -0.3)) scale(0.842104);
+    opacity: 0.79;
+  }
+  65% {
+    transform: translate(calc(var(--uib-size) * -0.2)) scale(0.894736);
+    opacity: 0.86;
+  }
+  70% {
+    transform: translate(calc(var(--uib-size) * -0.1)) scale(0.947368);
+    opacity: 0.93;
+  }
+  75% {
+    transform: translate(0%) scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(calc(var(--uib-size) * 0.1)) scale(0.947368);
+    opacity: 0.93;
+  }
+  85% {
+    transform: translate(calc(var(--uib-size) * 0.2)) scale(0.894736);
+    opacity: 0.86;
+  }
+  90% {
+    transform: translate(calc(var(--uib-size) * 0.3)) scale(0.842104);
+    opacity: 0.79;
+  }
+  95% {
+    transform: translate(calc(var(--uib-size) * 0.4)) scale(0.789472);
+    opacity: 0.72;
+  }
+  100% {
+    transform: translate(calc(var(--uib-size) * 0.5)) scale(0.73684);
+    opacity: 0.65;
+  }
+}
+
+body {
+  background: #fef9f1;
 }
 
 nav {
@@ -26,5 +190,6 @@ nav {
       color: #42b983;
     }
   }
+
 }
 </style>
