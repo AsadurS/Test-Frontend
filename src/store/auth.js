@@ -45,11 +45,11 @@ export default {
             await apiClient.post("api/me")
                 .then(res=>{
                     commit('SET_TOKEN', localStorage.getItem('token'))
-                    commit('SET_USER', res.data.user)
+                    commit('SET_USER', res.data)
                 }).catch(()=>{
                     commit('SET_TOKEN', null)
                     commit('SET_USER', null)
-                   // localStorage.removeItem("token")
+                    localStorage.removeItem("token")
 
                 });
         },
