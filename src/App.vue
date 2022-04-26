@@ -9,9 +9,12 @@ import {onMounted, ref} from "vue";
      onMounted(()=>{
         if(localToken){
           getUserData()
+        }else{
+          isAuthinticated.value=false
         }
      })
     const   getUserData= async ()=>{
+
     await  store.dispatch('auth/me')
         isAuthinticated.value=false
      }

@@ -11,17 +11,15 @@
             <h2>Log In</h2>
           </div>
           <div class="row">
-            <form control="" class="form-group">
+            <form control=""  @submit.prevent="submitForm()" class="form-group" >
               <div class="row">
-                <input type="text" name="username" id="name" v-model="form.email" class="form__input" placeholder="name">
+                <input type="text" name="username" id="name" v-model="form.email" class="form__input" placeholder="email">
               </div>
               <div class="row">
                 <!-- <span class="fa fa-lock"></span> -->
                 <input type="password" name="password" id="password" v-model="form.password" class="form__input" placeholder="Password">
               </div>
-
                 <input type="submit" value="Submit" class="btn">
-
             </form>
           </div>
           <div class="row">
@@ -34,14 +32,21 @@
 </template>
 <script>
 import { reactive } from "vue"
+import {useStore} from "vuex";
 export default {
   setup () {
     const formData = reactive({
       email: "",
       password: ""
     })
+    const store = useStore()
+    const submitForm = ()=>{
+
+      store.dispatch('auth/signIn',formData)
+    }
     return {
-      form:formData
+      form:formData,
+      submitForm
     }
   }
 }

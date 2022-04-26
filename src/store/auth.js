@@ -27,23 +27,29 @@ export default {
         }
     },
     actions: {
-        async signIn({dispatch},credentials)
+        async signIn({commit},credentials)
         {
             await apiClient.post("api/login",credentials)
                 .then(res=>{
-                    return dispatch('attempt', res.data.token)
+                    commit('SET_TOKEN', res.data.access_token)
+                    commit('SET_USER', res.data.user)
+                    localStorage.setItem('token',res.data.access_token)
+                }).catch(()=>{
+                    commit('SET_TOKEN', null)
+                    commit('SET_USER', null)
+
                 });
         },
         async me({commit})
         {
             await apiClient.post("api/me")
                 .then(res=>{
-                    commit('SET_TOKEN', res.data.token)
-                    commit('SET_USER', res.data.token)
+                    commit('SET_TOKEN', localStorage.getItem('token'))
+                    commit('SET_USER', res.data.user)
                 }).catch(()=>{
-                   
                     commit('SET_TOKEN', null)
                     commit('SET_USER', null)
+                   // localStorage.removeItem("token")
 
                 });
         },
@@ -53,28 +59,6 @@ export default {
                 .then(res=>{
                     return dispatch('attempt', res.data.token)
                 });
-        },
-        async attempt({commit, state}, token){
-            if(token)
-            {
-                await commit('SET_TOKEN', token)
-            }
-            if(!state.token)
-            {
-                return ;
-            }
-
-            try{
-                await apiClient.get("api/me").
-                then(res=>{
-                    commit("SET_USER", res.data)
-                })
-
-            }catch(e)
-            {
-                commit('SET_TOKEN', null)
-                commit("SET_USER", null)
-            }
         },
         signout({commit}){
             return apiClient.post("api/signout").then(()=>{
