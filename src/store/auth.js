@@ -14,18 +14,6 @@ export default {
             state.user = user
         }
     },
-    getters:{
-        authenticated(state)
-        {
-            if( state.token && state.user)
-            {
-                return true
-            }
-        },
-        user(state){
-            return state.user
-        }
-    },
     actions: {
         async signIn({commit},credentials)
         {

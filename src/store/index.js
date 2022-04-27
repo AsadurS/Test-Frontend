@@ -3,8 +3,6 @@ import auth from  './auth'
 export default createStore({
   state: {
   },
-  getters: {
-  },
   mutations: {
   },
   actions: {

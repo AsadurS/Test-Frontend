@@ -1,23 +1,17 @@
 <script>
-import {onMounted, ref} from "vue";
- import {useStore} from "vuex";
+import {onBeforeMount , ref} from "vue";
  export  default {
    setup(){
      const isAuthinticated = ref(true);
-     const store = useStore();
       const localToken = localStorage.getItem('token')
-     onMounted(()=>{
+     onBeforeMount (()=>{
         if(localToken){
-          getUserData()
+          isAuthinticated.value=false
         }else{
           isAuthinticated.value=false
         }
      })
-    const   getUserData= async ()=>{
-
-    await  store.dispatch('auth/me')
-        isAuthinticated.value=false
-     }
+   
      return {
        isAuthinticated
      }
