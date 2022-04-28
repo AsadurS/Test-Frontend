@@ -33,6 +33,7 @@
 <script>
 import { reactive } from "vue"
 import {useStore} from "vuex";
+import router from '@/router';
 export default {
   setup () {
     const formData = reactive({
@@ -40,9 +41,10 @@ export default {
       password: ""
     })
     const store = useStore()
-    const submitForm = ()=>{
-
-      store.dispatch('auth/signIn',formData)
+    const submitForm = async ()=>{
+     await store.dispatch('auth/signIn',formData)
+    
+      if(store.state.auth.token) router.push('/dashboard')
     }
     return {
       form:formData,
