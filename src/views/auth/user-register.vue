@@ -8,10 +8,10 @@
       <div class="col-md-8 col-xs-12 col-sm-12 login_form ">
         <div class="container-fluid">
           <div class="row">
-            <h2>Log In</h2>
+            <h2>Registration</h2>
           </div>
           <div class="row">
-            <form control="" class="form-group">
+            <form control="" @submit.prevent="submitForm()" class="form-group">
               <div class="row">
                 <input type="text" name="name" id="name" class="form__input" v-model='form.name' placeholder="Name">
               </div>
@@ -40,8 +40,9 @@
   </div>
 </template>
 <script>
-import {reactive, onMounted} from "vue"
+import {reactive} from "vue"
 import { useStore } from  'vuex'
+import router from '@/router'
 export default {
   setup () {
     const formData = reactive({
@@ -51,12 +52,11 @@ export default {
       password_confirmation: ""
     })
    const store = useStore()
-    const submitForm = ()=>{
-    store.dispatch('auth/signUp',123)
+    const submitForm = async()=>{
+      await store.dispatch('auth/signUp',formData)
+       if(store.state.auth.token) router.push('/dashboard')
     }
-    onMounted(()=>{
-      submitForm()
-    })
+   
     return {
       form:formData,
       submitForm

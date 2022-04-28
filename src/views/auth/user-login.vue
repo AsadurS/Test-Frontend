@@ -43,7 +43,6 @@ export default {
     const store = useStore()
     const submitForm = async ()=>{
      await store.dispatch('auth/signIn',formData)
-    
       if(store.state.auth.token) router.push('/dashboard')
     }
     return {

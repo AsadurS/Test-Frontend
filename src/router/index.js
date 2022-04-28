@@ -32,6 +32,15 @@ const routes = [
       title: 'Dashboard',
        middleware: [auth]
     }
+  },
+  {
+    path: '/users',
+    name:'users',
+    component: () => import( '../views/user-list.vue'),
+    meta:{
+      title: 'Users',
+       middleware: [auth]
+    }
   }
 ]
 

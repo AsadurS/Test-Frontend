@@ -41,15 +41,20 @@ export default {
 
                 });
         },
-        async signUp({dispatch},credentials)
+        async signUp({commit},credentials)
         {
             await apiClient.post("api/signup",credentials)
                 .then(res=>{
-                    return dispatch('attempt', res.data.token)
+                    commit('SET_TOKEN', res.data.access_token)
+                    commit('SET_USER', res.data.user)
+                    localStorage.setItem('token',res.data.access_token)
+                }).catch(()=>{
+                    commit('SET_TOKEN', null)
+                    commit('SET_USER', null)
                 });
         },
         signout({commit}){
-            return apiClient.post("api/signout").then(()=>{
+            return apiClient.post("api/logout").then(()=>{
                 commit('SET_TOKEN', null)
                 commit("SET_USER", null)
             });
