@@ -10,7 +10,7 @@ import { useStore } from 'vuex'
       const user = ref(false);
      onMounted(()=>{
         document.getElementsByClassName('chaotic-orbit')[0].style.display="none"
-         if(store.state.auth.user) user.value = store.state.auth.user
+         if(store.state.auth.user)  user.value = store.state.auth.user
      })
      return {
        user

@@ -1,4 +1,4 @@
-import apiClient from '../http-common';
+import axios from 'axios';
 export default {
     namespaced:true,
     state: {
@@ -17,7 +17,7 @@ export default {
     actions: {
         async signIn({commit},credentials)
         {
-            await apiClient.post("api/login",credentials)
+            await axios.post("api/login",credentials)
                 .then(res=>{
                     commit('SET_TOKEN', res.data.access_token)
                     commit('SET_USER', res.data.user)
@@ -28,22 +28,35 @@ export default {
 
                 });
         },
-        async me({commit})
-        {
-            await apiClient.post("api/me")
-                .then(res=>{
-                    commit('SET_TOKEN', localStorage.getItem('token'))
-                    commit('SET_USER', res.data)
-                }).catch(()=>{
-                    commit('SET_TOKEN', null)
-                    commit('SET_USER', null)
-                    localStorage.removeItem("token")
-
-                });
-        },
+        async attempt({commit, state}, token){
+            if(token)
+            {
+              await commit('SET_TOKEN', token)
+            }
+            if(!state.token)
+            {
+              return ;
+            }
+          
+            try{
+              await axios.
+              post("api/me").
+              then(res=>{
+                  commit("SET_USER", res.data)
+                  commit('SET_TOKEN', localStorage.getItem('token'))
+              }) 
+              
+            }catch(e)
+            {
+              commit('SET_TOKEN', null)
+              commit("SET_USER", null)
+              localStorage.removeItem("token")
+            }
+          },
+       
         async signUp({commit},credentials)
         {
-            await apiClient.post("api/signup",credentials)
+            await axios.post("api/signup",credentials)
                 .then(res=>{
                     commit('SET_TOKEN', res.data.access_token)
                     commit('SET_USER', res.data.user)
@@ -54,7 +67,7 @@ export default {
                 });
         },
         signout({commit}){
-            return apiClient.post("api/logout").then(()=>{
+            return axios.post("api/logout").then(()=>{
                 commit('SET_TOKEN', null)
                 commit("SET_USER", null)
             });

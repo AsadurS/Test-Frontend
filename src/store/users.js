@@ -1,4 +1,4 @@
-import apiClient from '../http-common';
+import axios from 'axios';
 export default {
     namespaced:true,
     state: {
@@ -14,7 +14,7 @@ export default {
     actions: {
         async getUsers({commit})
         {
-            await apiClient.get("api/users")
+            await axios.get("api/users")
                 .then(res=>{
      
                     commit('SET_USERs', res.data.users)
